@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
             style: ButtonStyle(
               splashFactory: NoSplash.splashFactory,
               animationDuration: const Duration(seconds: 2),
-              fixedSize: 
+              fixedSize:
               const MaterialStatePropertyAll(Size(double.infinity , 58)),
               shape: MaterialStatePropertyAll(
                   RoundedRectangleBorder(borderRadius: BorderRadius.circular(Dimens.medium))),

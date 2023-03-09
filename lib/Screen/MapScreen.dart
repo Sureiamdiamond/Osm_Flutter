@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:snap/Constant/Dimens.dart';
 import 'package:snap/Constant/Textstyles.dart';
 import 'package:snap/Widget/BackButton.dart';
@@ -28,16 +29,15 @@ class MyHomePage extends StatefulWidget{
 
   List<GeoPoint> geoPoint = [];
   String distance = "درحال محاسبه ی فاصله";
-  
+  String disAdress = "درحال بدست اوردن مقصد";
+  String originAdress = "درحال بدست اوردن مبدا";
   //Avalin index list
   List currentWidgetList = [currentWidgetState.stateSelectMabda];
 //markers
   Widget MaghsadMarker = SvgPicture.asset(Assets.icons.origin , height: 100, width: 48);
   Widget MabdaMarker = SvgPicture.asset(Assets.icons.destination , height: 100, width: 48);
-
   //Icon
   Widget MarkeerIcon = SvgPicture.asset(Assets.icons.origin , height: 100, width: 40);
-
   //MapController
   MapController mapController = MapController(
     initMapWithUserPosition: true,
@@ -75,19 +75,31 @@ class MyHomePage extends StatefulWidget{
 
             //BackButton
              Backbbutton(onPpressed: (){
-               if(geoPoint.isNotEmpty){
-                 geoPoint.removeLast();
-                 MarkeerIcon = SvgPicture.asset(Assets.icons.origin
-                   , height: 100, width: 48,);
 
-               }
-               if(currentWidgetList.length>1){
-                 setState(() {
-                   currentWidgetList.removeLast();
-                 });
+               switch(currentWidgetList.last){
+
+                 case currentWidgetState.stateSelectMabda :
+
+                   break;
+
+                 case currentWidgetState.stateSelectMaghsad :
+                     geoPoint.removeLast();
+                     MarkeerIcon = MabdaMarker;
+
+                   break;
+
+                 case currentWidgetState.stateREQdriver :
+                   mapController.advancedPositionPicker();
+                   mapController.removeMarker(geoPoint.last);
+                   geoPoint.removeLast();
+                   MarkeerIcon = MaghsadMarker;
+                   break;
                }
 
-               mapController.init();
+               setState(() {
+                 currentWidgetList.removeLast();
+               });
+
              }),
           ],
         ),
@@ -167,8 +179,8 @@ class MyHomePage extends StatefulWidget{
                         distance = "فاصله ی مبدا تا مقصد ${value~/1000} کیلومتر";
                       }
                     });
-
                   });
+                  getAdress();
 
                 },
                 child: Text("انتخاب مقصد" , style: MyTextStyle.button)
@@ -188,12 +200,34 @@ class MyHomePage extends StatefulWidget{
                   height: 55,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(Dimens.medium),
+                    color: Color(0xe47a8a7a),
+
+                  ),
+                  child: Center(child: Text(distance , style: MyTextStyle.button1 )),
+                ),
+                const SizedBox(height: Dimens.small,),
+                Container(
+                  width: double.infinity,
+                  height: 55,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(Dimens.medium),
                     color: Colors.white,
 
                   ),
-                  child: Center(child: Text(distance)),
+                  child: Center(child: Text("Origin : $originAdress")),
                 ),
-                SizedBox(height: Dimens.small,),
+                const SizedBox(height: Dimens.small,),
+                Container(
+                  width: double.infinity,
+                  height: 55,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(Dimens.medium),
+                    color: Colors.white,
+
+                  ),
+                  child: Center(child: Text("Destination : $disAdress")),
+                ),
+                const SizedBox(height: Dimens.small),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
@@ -209,6 +243,26 @@ class MyHomePage extends StatefulWidget{
             ),
           );
   }
+ getAdress()async{
 
+    try{
+      //maghsad
+      await placemarkFromCoordinates(geoPoint.last.latitude, geoPoint.last.longitude).then((List <Placemark> plist){
+        setState(() {
+          disAdress = " ${plist.first.thoroughfare} ${plist[2].name}";
+        });
+      });
+      //mabda
+      await placemarkFromCoordinates(geoPoint.first.latitude, geoPoint.first.longitude).then((List <Placemark> plist){
+        setState(() {
+          originAdress = " ${plist.first.thoroughfare} ${plist[2].name}";
+        });
+      });
+    } catch(e){
+      originAdress = "Server Error";
+      disAdress = "Server Error";
+    }
+
+ }
 }
 
