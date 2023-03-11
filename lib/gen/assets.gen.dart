@@ -15,11 +15,14 @@ class $AssetsIconsGen {
   /// File path: assets/icons/destination.svg
   String get destination => 'assets/icons/destination.svg';
 
+  /// File path: assets/icons/git.png
+  AssetGenImage get git => const AssetGenImage('assets/icons/git.png');
+
   /// File path: assets/icons/origin.svg
   String get origin => 'assets/icons/origin.svg';
 
   /// List of all assets
-  List<String> get values => [destination, origin];
+  List<dynamic> get values => [destination, git, origin];
 }
 
 class $AssetsImagesGen {

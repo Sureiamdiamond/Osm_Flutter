@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:snap/Constant/Dimens.dart';
-import 'package:snap/Screen/LoadingTest.dart';
+import 'package:snap/Screen/Splash.dart';
 
 import 'Screen/MapScreen.dart';
 
@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
           )
       ),
       debugShowCheckedModeBanner: false,
-      home:  Testscreen(),
+      home:  Splash(),
     );
   }
 }

@@ -1,6 +1,7 @@
 
 import 'dart:developer';
 
+
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -10,6 +11,7 @@ import 'package:snap/Constant/Dimens.dart';
 import 'package:snap/Constant/Textstyles.dart';
 import 'package:snap/Widget/BackButton.dart';
 import 'package:snap/gen/assets.gen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class currentWidgetState{
    currentWidgetState._();
@@ -35,6 +37,7 @@ class MyHomePage extends StatefulWidget{
   List currentWidgetList = [currentWidgetState.stateSelectMabda];
 //markers
   Widget MaghsadMarker = SvgPicture.asset(Assets.icons.origin , height: 100, width: 48);
+  // ignore: non_constant_identifier_names
   Widget MabdaMarker = SvgPicture.asset(Assets.icons.destination , height: 100, width: 48);
   //Icon
   Widget MarkeerIcon = SvgPicture.asset(Assets.icons.origin , height: 100, width: 40);
@@ -101,6 +104,37 @@ class MyHomePage extends StatefulWidget{
                });
 
              }),
+            Positioned(
+              top: Dimens.medium,
+              right: Dimens.medium,
+              child: Container(
+                height: 44,
+                width: 47,
+                decoration: const BoxDecoration(
+                    color:Color.fromARGB(255, 16, 171, 37),
+                    shape: BoxShape.circle,
+                    boxShadow:[
+                      BoxShadow(
+                          color: Colors.black26,
+                          offset: Offset(1.5,1.5),
+                          blurRadius: 3.5
+                      ),
+                    ]
+                ),
+                child: InkWell(
+                    onTap: () async {
+                      const urlString =
+                          'https://github.com/Sureiamdiamond/Osm_Flutter';
+                      Uri url = Uri.parse(urlString);
+                      if (await canLaunchUrl(url)) {
+                        await launchUrl(url);
+                      } else {
+                        throw 'Could not launch $url';
+                      }
+                    },
+                    child: Image.asset(Assets.icons.git.path)),
+              ),
+            )
           ],
         ),
       ),
@@ -200,7 +234,7 @@ class MyHomePage extends StatefulWidget{
                   height: 55,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(Dimens.medium),
-                    color: Color(0xe47a8a7a),
+                    color: const Color(0xe47a8a7a),
 
                   ),
                   child: Center(child: Text(distance , style: MyTextStyle.button1 )),

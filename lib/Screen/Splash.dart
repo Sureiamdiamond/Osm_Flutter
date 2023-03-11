@@ -1,26 +1,28 @@
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:snap/Screen/MapScreen.dart';
 
 import '../Constant/Textstyles.dart';
 
-class Testscreen extends StatefulWidget{
+class Splash extends StatefulWidget{
+  const Splash({super.key});
+
   
   @override
-  State<Testscreen> createState() => _TestscreenState();
+  State<Splash> createState() => _SplashState();
 }
 
-class _TestscreenState extends State<Testscreen> {
+class _SplashState extends State<Splash> {
+  @override
   void initState() {
     super.initState();
-    Timer(Duration(milliseconds: 1700), () {
+    Timer(const Duration(milliseconds: 1700), () {
       Navigator.pushReplacement(context,MaterialPageRoute(builder:
-      (context) =>  MyHomePage()));
+      (context) =>  const MyHomePage()));
 
     });
-    MyHomePage();
+    const MyHomePage();
   }
   @override
   Widget build(BuildContext context) {
@@ -30,12 +32,12 @@ class _TestscreenState extends State<Testscreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text("پ", style:MyTextStyle.button2,),
-            SizedBox(height: 3,),
-            Text('OSM Flutter App'),
+            const SizedBox(height: 3,),
+            const Text('OSM Flutter App'),
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
+              children: const [
+                SizedBox(
                   height: 70,
                   width: 20,
                 ),
