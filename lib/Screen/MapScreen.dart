@@ -214,7 +214,7 @@ class MyHomePage extends StatefulWidget{
                     color: Colors.white,
 
                   ),
-                  child: Center(child: Text("Origin : $originAdress")),
+                  child: Center(child: Text("مبدا :$originAdress")),
                 ),
                 const SizedBox(height: Dimens.small,),
                 Container(
@@ -225,7 +225,7 @@ class MyHomePage extends StatefulWidget{
                     color: Colors.white,
 
                   ),
-                  child: Center(child: Text("Destination : $disAdress")),
+                  child: Center(child: Text("مقصد :$disAdress")),
                 ),
                 const SizedBox(height: Dimens.small),
                 SizedBox(
@@ -247,13 +247,13 @@ class MyHomePage extends StatefulWidget{
 
     try{
       //maghsad
-      await placemarkFromCoordinates(geoPoint.last.latitude, geoPoint.last.longitude).then((List <Placemark> plist){
+      await placemarkFromCoordinates(geoPoint.last.latitude, geoPoint.last.longitude , localeIdentifier: "fa").then((List <Placemark> plist){
         setState(() {
           disAdress = " ${plist.first.thoroughfare} ${plist[2].name}";
         });
       });
       //mabda
-      await placemarkFromCoordinates(geoPoint.first.latitude, geoPoint.first.longitude).then((List <Placemark> plist){
+      await placemarkFromCoordinates(geoPoint.first.latitude, geoPoint.first.longitude , localeIdentifier: "fa").then((List <Placemark> plist){
         setState(() {
           originAdress = " ${plist.first.thoroughfare} ${plist[2].name}";
         });
